@@ -5,7 +5,7 @@ set FTPUploadDir=result
 ::读取参数和初始化
 set num=%1
 set currentDir=%~dp0
-set workDir=%currentDir%work
+set workDir=%currentDir%work%1
 ::清空上次工作目录
 if exist %workDir% call :cleanWorkDirectory
 mkdir %workDir%
