@@ -27,7 +27,7 @@ void client_init(){
 	char appInitName[MAX_LENGTH]={0};
 	//strcat(appInitName, ".\");
 	strcat(appInitName, appName);
-	strcat(appInitName, "_init.exe");
+	strcat(appInitName, "_init");
 	//文件不存在,表示用户只想执行子程序, 没有初始化程序
 	if((_access(appInitName,0) !=0)){
 		printf("%s not exist, skip user init.\n", appInitName);
