@@ -2,3 +2,4 @@ Debug/
 staroc-for-windows/Debug/
 *.suo
 *.user
+ipch/
