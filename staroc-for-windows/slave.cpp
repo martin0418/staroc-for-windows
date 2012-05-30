@@ -35,6 +35,10 @@ SHELLEXECUTEINFO startTask(int taskNum){
     ShExecInfo.lpVerb = NULL; 
     ShExecInfo.lpFile = appComputeName;
     ShExecInfo.lpParameters = ""; 
+	char * parameter;
+	sprintf(parameter,"%d",D.list[taskNum]);
+	const char * constParameter = parameter;
+	ShExecInfo.lpParameters = constParameter;
     ShExecInfo.lpDirectory = NULL; 
     ShExecInfo.nShow = SW_SHOW; 
     ShExecInfo.hInstApp = NULL; 
