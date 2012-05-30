@@ -34,10 +34,15 @@ void client_init(){
 	}
 	fflush(stdout);
 	int ret=system(appInitName);
-	if(!(WIFEXITED(ret) && WEXITSTATUS(ret) == RET_SUCCESS)){
+	if (ret == 0) //À´Ô´£ºhttp://topic.csdn.net/t/20051227/11/4483640.html 14Â¥
+	{
 		fprintf(stderr, "Client init %s run error \n", appInitName);
 		exit(-1);
 	}
+////	if(!(WIFEXITED(ret) && WEXITSTATUS(ret) == RET_SUCCESS)){
+////		fprintf(stderr, "Client init %s run error \n", appInitName);
+////		exit(-1);
+////	}
 }
 void update_master_info(int operation, int par1){
 		time_t currentTime;
@@ -190,7 +195,7 @@ int send_task(int nodeNum){
 
 	return RET_SUCCESS;	
 }
-void schedule(){
+void schedule(TaskInfo * TaskL,NodeInfo * NodeL){
 		int flag,i;
 		MPI_Status mpi_status;
 		for(i=1;i<=TotalHostNum;i++){
