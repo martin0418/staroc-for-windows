@@ -25,12 +25,12 @@ FILE *fpLog;
 
 void client_init(){
 	char appInitName[MAX_LENGTH]={0};
-	strcat(appInitName, "./");
+	//strcat(appInitName, ".\");
 	strcat(appInitName, appName);
-	strcat(appInitName, "_init");
+	strcat(appInitName, "_init.exe");
 	//文件不存在,表示用户只想执行子程序, 没有初始化程序
 	if((_access(appInitName,0) !=0)){
-		printf("%s not exit, skip user init.\n", appInitName);
+		printf("%s not exist, skip user init.\n", appInitName);
 		return ;
 	}
 	fflush(stdout);
@@ -135,7 +135,7 @@ void config_init(int argc, char* argv[]){
 
 	if(fpConfig==NULL){
 			fprintf(fpLog, "Open %s failed.\n", appConfigResultName);
-			printf("%s not exit, take default config.\n",appConfigResultName);
+			printf("%s not exist, take default config.\n",appConfigResultName);
 			sscanf(argv[2], "%d", &TotalTaskNum);
 			TotalTaskNum--;
 			TimeLimitPerTask=5;
@@ -308,6 +308,9 @@ void finishMaster(){
 }
 
 void doMaster(int argc, char* argv[]){
+	if (argc<2){
+		return;
+	}
 	appName=argv[1];//Client Application Name
 	sscanf(argv[2],"%d",&TotalHostNum);
 

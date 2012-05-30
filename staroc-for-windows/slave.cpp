@@ -6,16 +6,16 @@
 #include "include/definition.h"
 #include <Windows.h>
 
-FILE* fpLog;
+static FILE* fpLog;
 int rank;
 TaskDeployInfo D,De;
 TaskReturnInfo R;
 ////pid_t PidL[MAX_TASK_ONCE];
 MPI_Request mpi_request,mpi_request_exit;
 int status;
-int CompleteTaskNum;
+static int CompleteTaskNum;
 int FailedTaskNum;
-char appName[MAX_LENGTH];
+static char appName[MAX_LENGTH];
 char appComputeName[MAX_LENGTH];
 SHELLEXECUTEINFO ShExecInfo = {0};
 
@@ -29,7 +29,17 @@ void slave_init(){
 	MPI_Irecv(&De, sizeof(D), MPI_BYTE, 0, 1, MPI_COMM_WORLD, &mpi_request_exit);
 }
 SHELLEXECUTEINFO startTask(int taskNum){
-	
+	ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO); 
+    ShExecInfo.fMask = SEE_MASK_NOCLOSEPROCESS; 
+    ShExecInfo.hwnd = NULL; 
+    ShExecInfo.lpVerb = NULL; 
+    ShExecInfo.lpFile = appComputeName;
+    ShExecInfo.lpParameters = "appComputeName, taskNumString, NULL"; 
+    ShExecInfo.lpDirectory = NULL; 
+    ShExecInfo.nShow = SW_HIDE; 
+    ShExecInfo.hInstApp = NULL; 
+    ShellExecuteEx(&ShExecInfo);
+	return ShExecInfo;
 }
 //pid_t startTask(int taskNum){
 //	pid_t ret=fork();
@@ -65,9 +75,10 @@ int compute_rolling(){
 		case TASK_NODE_STARTED:{
 					       time(&finishTime);
 					       if(finishTime - startTime >= D.timeLimit[i]){
+							   TerminateProcess(ShExecInfo.hProcess,15);
 						       ////kill(pid,SIGKILL);
-						  timeOut=true;
-						  fprintf(fpLog, "Start task %d at %s",D.list[i],ctime(&startTime)); 
+							   timeOut=true;
+							   fprintf(fpLog, "Start task %d at %s",D.list[i],ctime(&startTime)); 
 								
 					       }
 					       ////int ret=waitpid(pid,&statloc,WNOHANG);
@@ -76,11 +87,14 @@ int compute_rolling(){
 
 						  ////     R.listStatus[i]=TASK_NODE_FINISH; 
 					      //// }
+						   WaitForSingleObject(ShExecInfo.hProcess,INFINITE);
+						   printf("Task %d finished \n",i);
+						   R.listStatus[i]=TASK_NODE_FINISH;
 					       break;
 				       }
 		case TASK_NODE_FINISH:{
 					      fprintf(fpLog, "Finish task %d , result: ", D.list[i]); 
-					      if(1){////(!(WIFSIGNALED(statloc)) && WEXITSTATUS(statloc)==RET_SUCCESS){
+					      if(1){///(!(WIFSIGNALED(statloc)) && WEXITSTATUS(statloc)==RET_SUCCESS){
 						      fprintf(fpLog, "SUCCESS");
 						      R.listStatus[i]=TASK_RET_SUCCESS;
 					      }else if(timeOut){
