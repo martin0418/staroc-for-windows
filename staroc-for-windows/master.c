@@ -7,7 +7,8 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
+#include <io.h>//int _access(const char *path,int mode)需要
+//#include <unistd.h> 没有这个头文件
 
 
 
@@ -27,7 +28,7 @@ void client_init(){
 	strcat(appInitName, appName);
 	strcat(appInitName, "_init");
 	//文件不存在,表示用户只想执行子程序, 没有初始化程序
-	if((access(appInitName, F_OK) !=0)){
+	if((_access(appInitName,0) !=0)){
 		printf("%s not exit, skip user init.\n", appInitName);
 		return ;
 	}
