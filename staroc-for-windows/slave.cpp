@@ -88,7 +88,7 @@ int compute_rolling(){
 						  ////     R.listStatus[i]=TASK_NODE_FINISH; 
 					      //// }
 						   WaitForSingleObject(ShExecInfo.hProcess,INFINITE);
-						   printf("Task %d finished \n",i);
+						   //printf("Task %d finished \n",i);
 						   R.listStatus[i]=TASK_NODE_FINISH;
 					       break;
 				       }
