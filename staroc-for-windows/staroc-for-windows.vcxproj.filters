@@ -20,13 +20,13 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="master.c">
+    <ClCompile Include="slave.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="slave.c">
+    <ClCompile Include="master.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="staroc.c">
+    <ClCompile Include="staroc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

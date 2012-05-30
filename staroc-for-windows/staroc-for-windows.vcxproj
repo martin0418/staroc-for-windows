@@ -72,9 +72,9 @@
     <ClInclude Include="include\definition.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="master.c" />
-    <ClCompile Include="slave.c" />
-    <ClCompile Include="staroc.c" />
+    <ClCompile Include="master.cpp" />
+    <ClCompile Include="slave.cpp" />
+    <ClCompile Include="staroc.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

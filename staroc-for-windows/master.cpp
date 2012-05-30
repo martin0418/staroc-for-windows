@@ -7,7 +7,7 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <io.h>  //int _access(const char *path,int mode)需要
+#include <io.h>  //int _access(const char *path,int mode)需要 来源：http://msdn.microsoft.com/zh-cn/library/1w06ktdy(v=vs.110).aspx
 //#include <process.h>  //int system(const char *command )需要
 //#include <unistd.h> 没有这个头文件
 

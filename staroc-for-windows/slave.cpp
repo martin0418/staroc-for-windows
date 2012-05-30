@@ -1,21 +1,23 @@
 #include <mpi.h>
 #include <stdio.h>
 #include <time.h>
-#include <unistd.h>
-#include <sys/wait.h>
+//#include <unistd.h> 没有这个头文件
+//#include <sys/wait.h> 没有这个头文件
 #include "include/definition.h"
+#include <Windows.h>
 
 FILE* fpLog;
 int rank;
 TaskDeployInfo D,De;
 TaskReturnInfo R;
-pid_t PidL[MAX_TASK_ONCE];
+////pid_t PidL[MAX_TASK_ONCE];
 MPI_Request mpi_request,mpi_request_exit;
 int status;
 int CompleteTaskNum;
 int FailedTaskNum;
 char appName[MAX_LENGTH];
 char appComputeName[MAX_LENGTH];
+SHELLEXECUTEINFO ShExecInfo = {0};
 
 void slave_init(){
 	char logName[MAX_LENGTH]={0};
@@ -26,25 +28,28 @@ void slave_init(){
 	fprintf(fpLog, "Node %d started at %s\n", rank, ctime(&currentTime));
 	MPI_Irecv(&De, sizeof(D), MPI_BYTE, 0, 1, MPI_COMM_WORLD, &mpi_request_exit);
 }
-pid_t startTask(int taskNum){
-	pid_t ret=fork();
-	char taskNumString[MAX_LENGTH];
-	sprintf(taskNumString, "%d", D.list[taskNum]);
-	if(ret<0){
-		//error###
-	}
-	if(ret>0){
-		//parent
-		return ret;
-	}
-	if(ret==0){
-		execl(appComputeName, appComputeName, taskNumString, NULL);
-	}
-	return -1;
+SHELLEXECUTEINFO startTask(int taskNum){
+	
 }
+//pid_t startTask(int taskNum){
+//	pid_t ret=fork();
+//	char taskNumString[MAX_LENGTH];
+//	sprintf(taskNumString, "%d", D.list[taskNum]);
+//	if(ret<0){
+//		//error###
+//	}
+//	if(ret>0){
+//		//parent
+//		return ret;
+//	}
+//	if(ret==0){
+//		execl(appComputeName, appComputeName, taskNumString, NULL);
+//	}
+//	return -1;
+//}
 int compute_rolling(){
 	static int i=0;
-	static pid_t pid;
+////	static pid_t pid;
 	static time_t startTime,finishTime;
 	static int statloc;
 	static int timeOut=false;
@@ -53,29 +58,29 @@ int compute_rolling(){
 						  time(&startTime);
 						  timeOut=false;
 						  fprintf(fpLog, "Start task %d at %s",D.list[i],ctime(&startTime)); 
-						  pid=startTask(i);
+						  ////pid=startTask(i);
 						  R.listStatus[i]=TASK_NODE_STARTED;
 						  break;
 					  }
 		case TASK_NODE_STARTED:{
 					       time(&finishTime);
 					       if(finishTime - startTime >= D.timeLimit[i]){
-						       kill(pid,SIGKILL);
+						       ////kill(pid,SIGKILL);
 						  timeOut=true;
 						  fprintf(fpLog, "Start task %d at %s",D.list[i],ctime(&startTime)); 
 								
 					       }
-					       int ret=waitpid(pid,&statloc,WNOHANG);
-					       if( ret!=0 && ( WIFEXITED(statloc) || WIFSIGNALED(statloc)) ){
+					       ////int ret=waitpid(pid,&statloc,WNOHANG);
+					       ////if( ret!=0 && ( WIFEXITED(statloc) || WIFSIGNALED(statloc)) ){
 						       //printf("Task %d finished \n", i);
 
-						       R.listStatus[i]=TASK_NODE_FINISH; 
-					       }
+						  ////     R.listStatus[i]=TASK_NODE_FINISH; 
+					      //// }
 					       break;
 				       }
 		case TASK_NODE_FINISH:{
 					      fprintf(fpLog, "Finish task %d , result: ", D.list[i]); 
-					      if(!(WIFSIGNALED(statloc)) && WEXITSTATUS(statloc)==RET_SUCCESS){
+					      if(1){////(!(WIFSIGNALED(statloc)) && WEXITSTATUS(statloc)==RET_SUCCESS){
 						      fprintf(fpLog, "SUCCESS");
 						      R.listStatus[i]=TASK_RET_SUCCESS;
 					      }else if(timeOut){
