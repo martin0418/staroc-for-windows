@@ -7,7 +7,8 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <io.h>//int _access(const char *path,int mode)需要
+#include <io.h>  //int _access(const char *path,int mode)需要
+//#include <process.h>  //int system(const char *command )需要
 //#include <unistd.h> 没有这个头文件
 
 
@@ -34,8 +35,10 @@ void client_init(){
 	}
 	fflush(stdout);
 	int ret=system(appInitName);
-	if (ret == 0) //来源：http://topic.csdn.net/t/20051227/11/4483640.html 14楼
+	if (ret !=0 || (ret == 0 && errno == 2) || (ret == -1 && (errno == 2 || errno == 7 || errno == 8 || errno == 12))) 
 	{
+		//来源1：http://msdn.microsoft.com/zh-cn/library/277bwbdz(v=vs.100).aspx
+		//来源2：http://topic.csdn.net/t/20051227/11/4483640.html 14楼
 		fprintf(stderr, "Client init %s run error \n", appInitName);
 		exit(-1);
 	}
