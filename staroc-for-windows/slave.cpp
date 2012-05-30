@@ -34,9 +34,9 @@ SHELLEXECUTEINFO startTask(int taskNum){
     ShExecInfo.hwnd = NULL; 
     ShExecInfo.lpVerb = NULL; 
     ShExecInfo.lpFile = appComputeName;
-    ShExecInfo.lpParameters = "appComputeName, taskNumString, NULL"; 
+    ShExecInfo.lpParameters = ""; 
     ShExecInfo.lpDirectory = NULL; 
-    ShExecInfo.nShow = SW_HIDE; 
+    ShExecInfo.nShow = SW_SHOW; 
     ShExecInfo.hInstApp = NULL; 
     ShellExecuteEx(&ShExecInfo);
 	return ShExecInfo;
@@ -69,6 +69,7 @@ int compute_rolling(){
 						  timeOut=false;
 						  fprintf(fpLog, "Start task %d at %s",D.list[i],ctime(&startTime)); 
 						  ////pid=startTask(i);
+						  startTask(i);
 						  R.listStatus[i]=TASK_NODE_STARTED;
 						  break;
 					  }
@@ -185,7 +186,7 @@ void receive_app_info(){
 	MPI_Recv(&appNameLength, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, &mpi_status);
 	MPI_Recv(appName, appNameLength, MPI_BYTE, 0,0, MPI_COMM_WORLD, &mpi_status);
 	appName[appNameLength]='\0';
-	sprintf(appComputeName, "./%s_compute",appName);
+	sprintf(appComputeName, "%s_compute.exe",appName);
 }
 void doSlave(int me){
 

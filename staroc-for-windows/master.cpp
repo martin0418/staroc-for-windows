@@ -309,11 +309,15 @@ void finishMaster(){
 
 void doMaster(int argc, char* argv[]){
 	if (argc<2){
+		appName="my-pic";
+		TotalHostNum=2;
 		return;
 	}
+	else
+	{
 	appName=argv[1];//Client Application Name
 	sscanf(argv[2],"%d",&TotalHostNum);
-
+	}
 	TotalHostNum--;
 	printf("Run client init...\n");
 	fflush(stdout);

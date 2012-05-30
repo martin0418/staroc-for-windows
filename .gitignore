@@ -1,6 +1,8 @@
-Debug/
+Debug/*.ilk
+Debug/*.pdb
 staroc-for-windows/Debug/
 *.suo
 *.user
 ipch/
 staroc-for-windows.sdf
+*.log
