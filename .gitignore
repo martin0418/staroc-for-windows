@@ -7,3 +7,4 @@ ipch/
 *.log
 *.sdf
 *.opensdf
+Debug/LuminanceHDR/

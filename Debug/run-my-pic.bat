@@ -1,2 +1,2 @@
-mpiexec -np 4 staroc-for-windows my-pic 4
+mpiexec -np 2 staroc-for-windows my-pic 2
 pause
