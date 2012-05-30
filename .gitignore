@@ -3,4 +3,5 @@ staroc-for-windows/Debug/
 *.suo
 *.user
 ipch/
-staroc-for-windows.sdf
+*.sdf
+*.opensdf
